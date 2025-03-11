@@ -6,6 +6,7 @@
     <arg name="gui" default="true"/>
     <arg name="headless" default="false"/>
     <arg name="debug" default="false"/>
+    <arg name="rviz_config" value="$(find two_lidar_pkg)/rviz/lidar_gazebo.rviz" />
 
     <!-- 运行gazebo仿真环境 -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -34,6 +35,6 @@
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
           args="-urdf -model my_model -param robot_description"/> 
 
-    <node name="rviz" pkg="rviz" type="rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" />
     
 </launch>

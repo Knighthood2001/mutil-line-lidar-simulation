@@ -7,6 +7,7 @@
     <arg name="gui" default="true"/>
     <arg name="headless" default="false"/>
     <arg name="debug" default="false"/>
+    <arg name="rviz_config" value="$(find two_lidar_pkg)/rviz/two_lidar_gazebo_demo.rviz" />
 
     <!-- 运行gazebo仿真环境 -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -20,7 +21,7 @@
 
     <!-- 将 Urdf 文件的内容加载到参数服务器 -->
     <!-- 加载机器人模型描述参数 -->
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find two_lidar_pkg)/urdf/xacro/two_lidar_64.xacro'" /> 
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find two_lidar_pkg)/urdf/xacro/two_lidar_demo.xacro'" /> 
 
     <!-- 启动 gazebo -->
     <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch" /> -->
@@ -37,5 +38,5 @@
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
           args="-urdf -model mbot -param robot_description"/> 
 
-    <node name="rviz" pkg="rviz" type="rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" />
 </launch>

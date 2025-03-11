@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!-- 这是直接将两个雷达和base_link绑定在一起，指定位置 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
   <!-- 将整个机器人固定到地面 -->
   <link name="world"/>
   <joint name="world_fixed" type="fixed">
@@ -11,37 +12,27 @@
   
   <link name="base_link"/>
 
-  <link name="link1" />
-  <link name="link2" />
-
 
   <!-- 导入Velodyne HDL-32E雷达的宏定义 -->
   <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro" />
   <!-- HDL-32E.urdf -->
 
   <!-- 放置第一个HDL-32E雷达 -->
-  <xacro:HDL-32E parent="link1" name="velodyne1" topic="/points_raw1" hz="10" samples="775" lasers="500" gpu="true">
-    <origin xyz=" 0 0 0" rpy="0 0 0" />
+  <xacro:HDL-32E parent="base_link" name="velodyne1" topic="/points_raw1" hz="10" samples="775" lasers="500" 
+      min_angle="${M_PI/4}"
+      max_angle="${3*M_PI/4}"
+      gpu="true">
+    <origin xyz=" -0.5 0 1" rpy="0 0 0" />
   </xacro:HDL-32E>
 
   <!-- 放置第二个HDL-32E雷达 -->
-  <xacro:HDL-32E parent="link2" name="velodyne2" topic="/points_raw2" hz="10" samples="775" lasers="500" gpu="true">
-    <origin xyz=" 0 0 0" rpy="0 0 0" /> 
+  <xacro:HDL-32E parent="base_link" name="velodyne2" topic="/points_raw2" hz="10" samples="775" lasers="500" 
+      min_angle="${M_PI/4}"
+      max_angle="${3*M_PI/4}"
+      gpu="true">
+    <origin xyz=" 0.5 0 1" rpy="0 0 0" /> 
   </xacro:HDL-32E>
 
-
-  <!-- 为雷达与基座添加固定关节 -->
-  <joint name="velodyne1_fixed" type="fixed">
-    <parent link="base_link"/>
-    <child link="link1"/>
-    <origin xyz="-0.5 0 1" rpy="0 0 0"/>
-  </joint>
-
-  <joint name="velodyne2_fixed" type="fixed">
-    <parent link="base_link"/>
-    <child link="link2"/>
-    <origin xyz="0.5 0 1" rpy="0 0 0"/>
-  </joint>
 </robot>
 
 

@@ -15,7 +15,7 @@
 
   <!-- 这里修改雷达的相关参数，这里没有设置采用gpu -->
   <!-- 如果后续，你需要将参数设置大一点的话，你就需要采用gpu -->
-  <xacro:VLP-16 parent="base_link" name="velodyne" topic="/points_raw" hz="10" samples="300">
+  <xacro:VLP-16 parent="base_link" name="velodyne" topic="/points_raw" hz="10" lasers="32" samples="1875">
     <origin xyz="0 0 1" rpy="0 0 0" />
   </xacro:VLP-16>
 
@@ -26,4 +26,6 @@
 
 
 </robot>
+
+
 
