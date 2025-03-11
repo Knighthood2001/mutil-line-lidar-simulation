@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
+  <!-- 定义world和base_link，将base_link和world固定 -->
+  <link name="world"/>
+  <joint name="world_fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link" />
+
+  <!-- 导入Velodyne VLP-16雷达的宏定义 -->
+  <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" />
+
+  <!-- 这里修改雷达的相关参数，这里没有设置采用gpu -->
+  <!-- 如果后续，你需要将参数设置大一点的话，你就需要采用gpu -->
+  <xacro:VLP-16 parent="base_link" name="velodyne" topic="/points_raw" hz="10" samples="300">
+    <origin xyz="0 0 1" rpy="0 0 0" />
+  </xacro:VLP-16>
+
+  <!-- 如果需要用gpu的话，用这下面的替代上面的 -->
+  <!-- <xacro:VLP-16 parent="base_link" name="velodyne" topic="/points_raw" hz="10" samples="500" gpu="true">
+    <origin xyz="0 0 1" rpy="0 0 0" />
+  </xacro:VLP-16> -->
+
+
+</robot>
+

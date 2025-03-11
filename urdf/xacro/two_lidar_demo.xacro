@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
+
+  <!-- 定义1x1x1的正方体作为base_link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="1 1 1"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.0 0.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.083" ixy="0.0" ixz="0.0" iyy="0.083" iyz="0.0" izz="0.083"/>
+    </inertial>
+  </link>
+
+  <!-- 定义第一个圆柱体作为雷达的支撑 -->
+  <link name="cylinder_link1">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.03"/> <!-- 调整长度和半径以符合您的需求 -->
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1.0"/> <!-- 灰色材质 -->
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.03"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- 您需要为此链接定义适当的惯性属性 -->
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.002"/>
+    </inertial>
+  </link>
+
+  <!-- 定义第二个圆柱体作为雷达的支撑 -->
+  <link name="cylinder_link2">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.03"/> <!-- 调整长度和半径以符合您的需求 -->
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1.0"/> <!-- 灰色材质 -->
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.03"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- 您需要为此链接定义适当的惯性属性 -->
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.002"/>
+    </inertial>
+  </link> 
+
+ <!-- 将圆柱体连接到base_link -->
+  <joint name="cylinder_joint1" type="fixed">
+    <parent link="base_link"/>
+    <child link="cylinder_link1"/>
+    <origin xyz="0.5 0.45 0.55" rpy="0 0 0"/> <!-- 调整位置以符合您的需求 -->
+  </joint>
+
+  <joint name="cylinder_joint2" type="fixed">
+    <parent link="base_link"/>
+    <child link="cylinder_link2"/>
+    <origin xyz="-0.5 0.45 0.55" rpy="0 0 0"/> <!-- 调整位置以符合您的需求 -->
+  </joint>
+
+
+
+    <!-- 导入Velodyne VLP-16雷达的宏定义 -->
+  <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro" />
+  <!-- HDL-32E.urdf -->
+
+  <!-- 放置第一个VLP-16雷达 -->
+  <xacro:HDL-32E parent="cylinder_link1" name="velodyne1" topic="/points_raw1" hz="10" samples="775" lasers="500" gpu="true">
+    <origin xyz="0 0 0.05" rpy="0 0 0" /> <!-- 修改这里的xyz和rpy以改变雷达的位置和朝向 -->
+  </xacro:HDL-32E>
+
+  <!-- 放置第二个VLP-16雷达 -->
+  <xacro:HDL-32E parent="cylinder_link2" name="velodyne2" topic="/points_raw2" hz="10" samples="775" lasers="500" gpu="true">
+    <origin xyz="0 0 0.05" rpy="0 0 0" /> <!-- 修改这里的xyz和rpy以改变雷达的位置和朝向 -->
+  </xacro:HDL-32E>
+
+</robot>
+
+
